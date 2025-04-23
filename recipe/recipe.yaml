@@ -30,10 +30,10 @@ tests:
       bin: 
         - luajit
       include: 
-        - libluajit-${{ major_minor }}/lua.h
-        - libluajit-${{ major_minor }}/luajit.h
+        - luajit-${{ major_minor }}/lua.h
+        - luajit-${{ major_minor }}/luajit.h
       lib: 
-        - libluajit-${{ lua }}
+        - luajit-${{ lua }}
   - script:
       - luajit -v
       - luajit -e "print(package.path)"
