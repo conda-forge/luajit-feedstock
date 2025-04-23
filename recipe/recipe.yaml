@@ -1,0 +1,40 @@
+context:
+  version: "2.0.5"
+
+package:
+  name: luajit
+  version: ${{ version }}
+
+source:
+  url: https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${{ version }}.zip
+  sha256: 2adbe397a5b6b8ab22fa8396507ce852a2495db50e50734b3daa1ffcadd9eeb4
+
+build:
+  number: 1000
+  prefix_detection:
+    ignore_binary_files: true
+  skip:
+    - win
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - if: unix
+      then: make
+
+tests:
+  - script:
+      - luajit -v
+      - luajit -e "print(package.path)"
+
+about:
+  homepage: http://luajit.org/
+  license: MIT
+  license_file: COPYRIGHT
+  summary: Just-In-Time Compiler (JIT) for the Lua programming language.
+
+extra:
+  recipe-maintainers:
+    - brisk022
+    - marcelotrevisani
+    - baszalmstra
