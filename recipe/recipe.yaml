@@ -1,5 +1,7 @@
 context:
   version: "2.0.5"
+  major_minor: ${{ (version | split('.'))[:2] | join('.')}}
+  lua: "5.1"
 
 package:
   name: luajit
@@ -24,6 +26,14 @@ requirements:
       then: make
 
 tests:
+  - package_contents:
+      bin: 
+        - luajit
+      include: 
+        - libluajit-${{ major_minor }}/lua.h
+        - libluajit-${{ major_minor }}/luajit.h
+      lib: 
+        - libluajit-${{ lua }}
   - script:
       - luajit -v
       - luajit -e "print(package.path)"
