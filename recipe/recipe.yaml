@@ -1,5 +1,5 @@
 context:
-  version: "2.0.5"
+  version: "2.1.ROLLING"
   major_minor: ${{ (version | split('.'))[:2] | join('.') }}
   lua: "5.1"
 
@@ -9,10 +9,10 @@ package:
 
 source:
   url: https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${{ version }}.zip
-  sha256: 2adbe397a5b6b8ab22fa8396507ce852a2495db50e50734b3daa1ffcadd9eeb4
+  sha256: 7c2c5e3d57538b77018bbb0e8111556f572122bcaedb227a68577eb05174aaf5
 
 build:
-  number: 1000
+  number: 0
   prefix_detection:
     ignore_binary_files: true
   skip:
@@ -27,12 +27,12 @@ requirements:
 
 tests:
   - package_contents:
-      bin: 
+      bin:
         - luajit
-      include: 
+      include:
         - luajit-${{ major_minor }}/lua.h
         - luajit-${{ major_minor }}/luajit.h
-      lib: 
+      lib:
         - luajit-${{ lua }}
   - script:
       - luajit -v
