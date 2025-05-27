@@ -31,8 +31,8 @@ tests:
       bin: 
         - luajit
       include: 
-        - luajit-2.1/lua.h
-        - luajit-2.1/luajit.h
+        - luajit-2.0/lua.h
+        - luajit-2.0/luajit.h
       lib: 
         - if: win
           then: lua51
