@@ -1,6 +1,6 @@
 context:
   name: luajit
-  version: "2.0.5"
+  version: "2.1.ROLLING"
   version_under: ${{ version | replace("-", "_") }}
 
 package:
@@ -9,10 +9,10 @@ package:
 
 source:
   url: https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${{ version }}.zip
-  sha256: 2adbe397a5b6b8ab22fa8396507ce852a2495db50e50734b3daa1ffcadd9eeb4
+  sha256: 7c2c5e3d57538b77018bbb0e8111556f572122bcaedb227a68577eb05174aaf5
 
 build:
-  number: 1001
+  number: 0
 
 requirements:
   build:
@@ -20,20 +20,20 @@ requirements:
     - ${{ stdlib("c") }}
     - if: unix
       then: make
-  run_exports: 
+  run_exports:
     - ${{ pin_subpackage(name) }}
-  run_constraints: 
+  run_constraints:
     # Luajit should not be installed together with lua 5.1
     - lua <5.1|>=5.2
 
 tests:
   - package_contents:
-      bin: 
+      bin:
         - luajit
-      include: 
+      include:
         - luajit-2.0/lua.h
         - luajit-2.0/luajit.h
-      lib: 
+      lib:
         - if: win
           then: lua51
           else: luajit
