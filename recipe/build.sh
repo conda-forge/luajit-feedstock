@@ -3,10 +3,10 @@
 set -o xtrace -o nounset -o pipefail -o errexit
 
 if [[ -n ${CONDA_BUILD_CROSS_COMPILATION-} ]]; then
-    IFS="-" read -ra TRIPLE <<< "$(basename ${CC})"
-    ARCH=${TRIPLE[0]}
-    CC_BASE=${TRIPLE[-1]}
-	if [[ "$(uname)" == "Darwin" ]]; then
+    CC_BASENAME="$(basename "${CC}")"
+    ARCH="${CC_BASENAME%%-*}"
+    CC_BASE="${CC_BASENAME##*-}"
+    if [[ "$(uname)" == "Darwin" ]]; then
         ARCH_FLAG="-arch ${ARCH}"
     else
         ARCH_FLAG=""
