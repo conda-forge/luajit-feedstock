@@ -3,9 +3,9 @@
 set -o xtrace -o nounset -o pipefail -o errexit
 
 if [[ -n ${CONDA_BUILD_CROSS_COMPILATION-} ]]; then
-    IFS="-" read -ra TRIPLE <<< "${CC}"
-    ARCH=${TRIPLE[0]}
-    CC_BASE=${TRIPLE[3]}
+    IFS="-" read -ra TRIPLE <<< "$(basename ${CC})"
+    ARCH=${TRIPLE[0]}      # → aarch64
+    CC_BASE=${TRIPLE[-1]}  # → cc
     make amalg PREFIX=${PREFIX} XCFLAGS=-DLUAJIT_ENABLE_GC64 CC=${CC_BASE} \
         HOST_CC=${CONDA_TOOLCHAIN_BUILD}-${CC_BASE} \
         CROSS="${CONDA_TOOLCHAIN_HOST}-" \
