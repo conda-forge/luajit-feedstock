@@ -3,17 +3,22 @@
 set -o xtrace -o nounset -o pipefail -o errexit
 
 if [[ -n ${CONDA_BUILD_CROSS_COMPILATION-} ]]; then
-    IFS="-" read -ra TRIPLE <<< "${CC}"
-    ARCH=${TRIPLE[0]}
-    CC_BASE=${TRIPLE[3]}
+    CC_BASENAME="$(basename "${CC}")"
+    ARCH="${CC_BASENAME%%-*}"
+    CC_BASE="${CC_BASENAME##*-}"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        ARCH_FLAG="-arch ${ARCH}"
+    else
+        ARCH_FLAG=""
+    fi
     make amalg PREFIX=${PREFIX} XCFLAGS=-DLUAJIT_ENABLE_GC64 CC=${CC_BASE} \
         HOST_CC=${CONDA_TOOLCHAIN_BUILD}-${CC_BASE} \
         CROSS="${CONDA_TOOLCHAIN_HOST}-" \
-        TARGET_FLAGS="-arch ${ARCH} -isysroot ${CONDA_BUILD_SYSROOT}"
+        TARGET_FLAGS="${ARCH_FLAG} -isysroot ${CONDA_BUILD_SYSROOT}"
     make install PREFIX=${PREFIX} XCFLAGS=-DLUAJIT_ENABLE_GC64 CC=${CC_BASE} \
         HOST_CC=${CONDA_TOOLCHAIN_BUILD}-${CC_BASE} \
         CROSS="${CONDA_TOOLCHAIN_HOST}-" \
-        TARGET_FLAGS="-arch ${ARCH} -isysroot ${CONDA_BUILD_SYSROOT}"
+        TARGET_FLAGS="${ARCH_FLAG} -isysroot ${CONDA_BUILD_SYSROOT}"
 else
     make amalg PREFIX=${PREFIX} XCFLAGS=-DLUAJIT_ENABLE_GC64 CC=${CC}
     make install PREFIX=${PREFIX} XCFLAGS=-DLUAJIT_ENABLE_GC64 CC=${CC}
